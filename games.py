@@ -339,5 +339,6 @@ async def highlow(interaction: discord.Interaction, highlowequal: str):
         if role is None:
             role = await interaction.guild.create_role(name="Risky7", color=discord.Color.red())
         await interaction.user.add_roles(role)
-bot.run('MTQxOTExMjE5ODI0ODMzMzM3Mg.G6dZGJ.PoEmJANZ2c9X7pPjYQMCbZlXqGYVJQA9WzL7l8')
+bot.run('Bot token')
+
 
