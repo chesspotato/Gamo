@@ -339,6 +339,44 @@ async def highlow(interaction: discord.Interaction, highlowequal: str):
         if role is None:
             role = await interaction.guild.create_role(name="Risky7", color=discord.Color.red())
         await interaction.user.add_roles(role)
+
+
+@bot.tree.command(name="trivia", description="Answer a random yes or no trivia question")
+async def trivia(inteaction: discord.Interaction, challenger: discord.Member):
+    questions = {
+        "Is Lebron James our glorious kind?": "yes",
+        "Is Hackclub the best?": "yes",
+        "Is python the most used programming language?": "No",
+        "Is 2+2=5": "No",
+        "Is the sky blue?`": "yes",
+        "Is the earth flat?": "No",
+        "Is Zero considered a natural number?": "No",
+        "Do all mammals lay eggs?": "No", 
+        "Is the Great Wall of China visible from space?": "No",
+        "Is 97 a prime number?": "Yes",
+        "Is light faster than sound?": "Yes",
+        "Is the statue of liberty older than the Eiffel Tower?": "Yes"
+    }
+
+    question, answer = random.choice(list(questions.items()))
+    await inteaction.response.send_message(f'Trivia Time! {question} (yes/no)')
+    def check(m):
+        return (
+            m.author in [inteaction.user, challenger] and 
+            m.channel == inteaction.channel and
+            m.content.lower() in ['yes', 'no']
+        )
+    try:
+        msg = await bot.wait_for("message", check=check, timeout=20)
+    except asyncio.TimeoutError:
+        await inteaction.followup.send("Too slow game cancelled")
+        return
+    
+    if msg.content.lower() == answer.lower():
+        winner = msg.author
+        await inteaction.followup.send(f'Correct the winner is {winner.mention}, the answer was {answer}') 
+        
 bot.run('Bot token')
+
 
 
